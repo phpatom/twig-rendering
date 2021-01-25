@@ -3,13 +3,14 @@
 
 namespace Atom\TwigRendering;
 
-use Atom\App\App;
-use Atom\App\Contracts\ServiceProviderContract;
+use Atom\Kernel\Kernel;
+use Atom\Kernel\Contracts\ServiceProviderContract;
 use Atom\DI\Exceptions\CircularDependencyException;
 use Atom\DI\Exceptions\ContainerException;
 use Atom\DI\Exceptions\NotFoundException;
 use Atom\DI\Exceptions\StorageNotFoundException;
 use Atom\DI\Exceptions\UnsupportedInvokerException;
+use Atom\Web\Application;
 use Atom\Web\Contracts\RendererContract;
 use Twig\Environment;
 use Twig\Error\LoaderError;
@@ -63,7 +64,7 @@ class TwigRendering implements ServiceProviderContract
 
 
     /**
-     * @param App $app
+     * @param Application|Kernel $app
      * @throws LoaderError
      * @throws CircularDependencyException
      * @throws ContainerException
@@ -71,9 +72,8 @@ class TwigRendering implements ServiceProviderContract
      * @throws StorageNotFoundException
      * @throws UnsupportedInvokerException
      */
-    public function register(App $app)
+    public function register(Kernel $app)
     {
-
         if (!is_null($this->cacheDir) && !$this->cacheIfProduction) {
             $this->options["cache"] = $app->path()->app($this->cacheDir);
         }
